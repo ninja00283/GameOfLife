@@ -18,46 +18,87 @@ namespace GameOfLife
         static void Main(string[] args)
         {
             GameBoardGrid = new List<List<char>> {
-                new List<char>{ '0','0','0','0','0' },
-                new List<char>{ '0','0','X','0','0' },
-                new List<char>{ '0','0','X','0','0' },
-                new List<char>{ '0','0','X','0','0' },
-                new List<char>{ '0','0','0','0','0' },
+                new List<char>{ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0','0', '0',},
+                new List<char>{ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0','0', '0',},
+                new List<char>{ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0','0', '0',},
+                new List<char>{ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0','0', '0',},
+                new List<char>{ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0','0', '0',},
+                new List<char>{ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0','0', '0',},
+                new List<char>{ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0','0', '0',},
+                new List<char>{ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0','0', '0',},
+                new List<char>{ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0','0', '0',},
+                new List<char>{ '0', '0', '0', '0', '0', 'X', '0', 'X', '0', 'X', '0', '0', '0', '0','0', '0',},
+                new List<char>{ '0', '0', '0', '0', '0', 'X', '0', '0', '0', 'X', '0', '0', '0', '0','0', '0',},
+                new List<char>{ '0', '0', '0', '0', '0', 'X', '0', '0', '0', 'X', '0', '0', '0', '0','0', '0',},
+                new List<char>{ '0', '0', '0', '0', '0', 'X', '0', '0', '0', 'X', '0', '0', '0', '0','0', '0',},
+                new List<char>{ '0', '0', '0', '0', '0', 'X', '0', 'X', '0', 'X', '0', '0', '0', '0','0', '0',},
+                new List<char>{ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0','0', '0',},
+                new List<char>{ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0','0', '0',},
+                new List<char>{ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0','0', '0',},
+                new List<char>{ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0','0', '0',},
+                new List<char>{ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0','0', '0',},
+                new List<char>{ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0','0', '0',},
+                new List<char>{ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0','0', '0',},
+                new List<char>{ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0','0', '0',},
+                new List<char>{ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0','0', '0',},
+                new List<char>{ '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0','0', '0',},
             };
-            int i = 0;
-            while (true)
+            int Time = 0;
+            bool Changed = true;
+            while (Changed)
             {
                 
-                System.Threading.Thread.Sleep(500);
+                System.Threading.Thread.Sleep(250);
                 PrintFinal(GameBoardGrid);
-                GameBoardGrid = BeginCheckingCells(GameBoardGrid);
-                Console.WriteLine(i++);
+                List<List<char>> GameBoardGridToCheck = BeginCheckingCells(GameBoardGrid);
+                int CheckedEqual = 0;
+                for (int i = 0; i < GameBoardGridToCheck.Count; i++)
+                {
+                    for (int ii = 0; ii < GameBoardGridToCheck[i].Count; ii++)
+                    {
+                        if (GameBoardGridToCheck[i][ii] == GameBoardGrid[i][ii])
+                        {
+                            CheckedEqual++;
+                        }
+                    }
+                }
+                Changed = !(CheckedEqual == GameBoardGridToCheck.Count * GameBoardGridToCheck[0].Count);
+                GameBoardGrid = GameBoardGridToCheck;
+                Console.WriteLine(Time++);
             }   
         }
 
 
-        public static List<List<char>> BeginCheckingCells(List<List<char>> gameBoardGrid) {
-            for (int y = 0; y < gameBoardGrid.Count; y++)
+        public static List<List<char>> BeginCheckingCells(List<List<char>> GameBoardGrid) {
+
+            List<List<char>> gameBoardGrid = GameBoardGrid.ConvertAll(GameBoard => new List<char>(GameBoard));
+
+            for (int i = 0; i < gameBoardGrid.Count; i++)
             {
-                for (int x = 0; x < gameBoardGrid[y].Count; x++)
+                for (int ii = 0; ii < gameBoardGrid[i].Count; ii++)
                 {
-                    int numberOfNeighbours = checkcells(gameBoardGrid,y,x);
+                    gameBoardGrid[i][ii] = '0';
+                }
+            }
+
+            for (int y = 0; y < GameBoardGrid.Count; y++)
+            {
+                for (int x = 0; x < GameBoardGrid[y].Count; x++)
+                {
+                    int numberOfNeighbours = checkcells(GameBoardGrid, x,y);
                     switch (numberOfNeighbours)
                     {
                         case int i when (i < 2):
-                            gameBoardGrid = RemoveCurrentCell(x, y, gameBoardGrid);
-                            Debug.WriteLine("<2");
+                            gameBoardGrid[y][x] = '0';
                             break;
                         case 3:
-                            gameBoardGrid = AddCurrentCell(x, y, gameBoardGrid);
-                            Debug.WriteLine("3");
+                            gameBoardGrid[y][x] = 'X';
                             break;
                         case int i when (i > 3):
-                            gameBoardGrid = RemoveCurrentCell(x, y, gameBoardGrid);
-                            Debug.WriteLine(">3");
+                            gameBoardGrid[y][x] = '0';
                             break;
                         default:
-                            Debug.WriteLine("<2");
+                            gameBoardGrid[y][x] = GameBoardGrid[y][x];
                             break;
                     }
                 }
@@ -68,16 +109,18 @@ namespace GameOfLife
         public static List<List<char>> RemoveCurrentCell(int x, int y, List<List<char>> GameBoardGrid) {
             List<List<char>> gameBoardGrid = GameBoardGrid.ConvertAll(GameBoard => new List<char>(GameBoard));
 
-            gameBoardGrid[x][y] = '0';
+            
             return gameBoardGrid;
         }
 
         public static List<List<char>> AddCurrentCell(int x, int y, List<List<char>> GameBoardGrid)
         {
             List<List<char>> gameBoardGrid = GameBoardGrid.ConvertAll(GameBoard => new List<char>(GameBoard));
-            gameBoardGrid[x][y] = 'X';
+            gameBoardGrid[y][x] = 'X';
             return gameBoardGrid;
         }
+
+
 
         public static int checkcells(List<List<char>> gameBoardGrid, int x, int y) {
             //return the amount of neighbours
@@ -90,7 +133,7 @@ namespace GameOfLife
                         if (i < gameBoardGrid[i1].Count && i > -1) {
                             if (i != x ||  i1 != y)
                             {
-                                if (gameBoardGrid[i][i1] == 'X')
+                                if (gameBoardGrid[i1][i] == 'X')
                                 {
                                     numberOfNeighbours++;
                                 }
@@ -109,6 +152,13 @@ namespace GameOfLife
             {
                 foreach (var yItem in xItem)
                 {
+                    if (yItem == 'X')
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                    }
+                    else {
+                        Console.ForegroundColor = ConsoleColor.Black;
+                    }
                     Console.Write(yItem.ToString());
                 }
                 Console.Write("\n");
